@@ -144,7 +144,13 @@ public class PackageManager {
     }
 
     public static void main (String [] args) {
+      
+      //Your program is not required to handle badly formatted json files, but it must exit gracefully if the input file is incorrect. 
+      
+      
         System.out.println("PackageManager.main()");
+        
+        
     }
     
 }
