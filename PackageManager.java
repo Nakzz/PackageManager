@@ -1,8 +1,14 @@
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -36,12 +42,16 @@ import org.json.simple.parser.ParseException;
 public class PackageManager {
     
     private Graph graph;
+    private Set<String> packageList; 
+    private ArrayList<Package> packageObjectList; 
     
     /*
      * Package Manager default no-argument constructor.
      */
     public PackageManager() {
-        
+        this.graph = new Graph();
+        this.packageList = new HashSet<String>();
+this.packageObjectList = new ArrayList<Package>();
     }
     
     /**
@@ -55,6 +65,75 @@ public class PackageManager {
      */
     public void constructGraph(String jsonFilepath) throws FileNotFoundException, IOException, ParseException {
         
+      JSONParser parser = new JSONParser();
+      
+      try {     
+        Object obj = parser.parse(new FileReader(jsonFilepath));
+
+        JSONObject jsonObject =  (JSONObject) obj;
+
+        // loop array
+        JSONArray packages = (JSONArray) jsonObject.get("packages");
+
+
+
+        
+        for(int i=0; i < packages.size(); i++) {
+          JSONObject packageItem = (JSONObject) packages.get(i);
+          
+          String name = (String) packageItem.get("name") ;
+          JSONArray dependencies = (JSONArray) packageItem.get("dependencies");
+          
+          String[] depenString = new String[100];
+          
+          
+          System.out.println("Package name: "+name);
+          
+          for(int j = 0; j < dependencies.size(); j++){
+            depenString[j] = (String) dependencies.get(j);
+            System.out.println("\t"+depenString[j]);
+            
+          }
+          
+          Package newPackage = new Package(name, depenString);
+          packageObjectList.add(newPackage);
+          insertPackagetoGraph(newPackage);
+          
+        }
+        
+        System.out.println("DONE!");
+        
+        
+    } catch (FileNotFoundException e) {
+       throw new FileNotFoundException();
+    } catch (IOException e) {
+      throw new IOException();
+    } catch (ParseException e) {
+      throw new ParseException(0);
+    }
+      
+    }
+    
+    private void insertPackagetoGraph(Package p) {
+      
+      String packageName = p.getName();
+      String[] dependencies = p.getDependencies();
+      
+      if(packageName != null && !packageList.contains(packageName))
+        packageList.add(packageName);
+      
+      this.graph.addVertex(packageName);
+      
+      for (int i=0; i< dependencies.length; i++) {
+        String dependPack = dependencies[i];
+        this.graph.addEdge(packageName, dependPack);
+        
+        if(dependPack != null && !packageList.contains(dependPack))
+          packageList.add(dependPack);
+      }
+      
+      
+      
     }
     
     /**
@@ -63,7 +142,7 @@ public class PackageManager {
      * @return Set<String> of all the packages
      */
     public Set<String> getAllPackages() {
-        return null;
+        return this.packageList;
     }
     
     /**
@@ -84,7 +163,13 @@ public class PackageManager {
      * dependency graph.
      */
     public List<String> getInstallationOrder(String pkg) throws CycleException, PackageNotFoundException {
-        return null;
+      if(!this.packageList.contains(pkg))
+        throw new PackageNotFoundException();
+      
+      
+      
+      
+      return null;
     }
     
     /**
@@ -140,16 +225,39 @@ public class PackageManager {
      * @throws CycleException if you encounter a cycle in the graph
      */
     public String getPackageWithMaxDependencies() throws CycleException {
+    //TODO: IMPLEMENT  
+      for(int i=0; i< this.packageObjectList.size(); i++) {
+        
+      }
+      
         return "";
     }
 
     public static void main (String [] args) {
       
       //Your program is not required to handle badly formatted json files, but it must exit gracefully if the input file is incorrect. 
+      // parse json file path form args
       
+      String jsonFilePath = "test.json";
       
         System.out.println("PackageManager.main()");
         
+        PackageManager manager = new PackageManager();
+        
+        try {
+          manager.constructGraph(jsonFilePath);
+          
+          
+        } catch (FileNotFoundException e) {
+          System.out.println("FILE WASN'T FOUND");
+          e.printStackTrace();
+        } catch (IOException e) {
+          System.out.println("IO EXCEPTION");
+          e.printStackTrace();
+        } catch (ParseException e) {
+          System.out.println("PARSEEXCEPTION");
+          e.printStackTrace();
+        }
         
     }
     
