@@ -92,7 +92,16 @@ public class PackageManagerTest {
           fail("Doesn't contain all as expected");
       }
       
+ expected= new HashSet<String>();
       
+      expected.add("A");
+      
+      actualList = manager.toInstall("A", "B");
+      
+      for(String e : expected) {
+        if(!actualList.contains(e))
+          fail("Doesn't contain all as expected");
+      }
       
     } catch (FileNotFoundException e) {
       System.out.println("FILE WASN'T FOUND");
@@ -197,6 +206,18 @@ public class PackageManagerTest {
       expected.add("A");
       
       List<String> actualList = manager.getInstallationOrder("A");
+      
+      for(String e : expected) {
+        if(!actualList.contains(e))
+          fail("Doesn't contain all as expected");
+      }
+      
+      expected= new HashSet<String>();
+      
+      expected.add("C");
+      expected.add("A");
+      
+      actualList = manager.toInstall("A", "B");
       
       for(String e : expected) {
         if(!actualList.contains(e))
