@@ -105,15 +105,19 @@ public class PackageManagerTest {
       
     } catch (FileNotFoundException e) {
       System.out.println("FILE WASN'T FOUND");
+      fail("Should not throw this error");
       e.printStackTrace();
     } catch (IOException e) {
       System.out.println("IO EXCEPTION");
+      fail("Should not throw this error");
       e.printStackTrace();
     } catch (ParseException e) {
       System.out.println("PARSEEXCEPTION");
+      fail("Should not throw this error");
       e.printStackTrace();
     } catch (Exception e) {
       System.out.println("LIFENOTFOUNDEXCEPTION: At this point. IDEK.");
+      fail("Should not throw this error");
       e.printStackTrace();
     }
   }
@@ -156,20 +160,21 @@ public class PackageManagerTest {
         fail("Should receive cyclic error now");
       }
   
-          
-      
-      
     } catch (FileNotFoundException e) {
       System.out.println("FILE WASN'T FOUND");
+      fail("Should not throw this error");
       e.printStackTrace();
     } catch (IOException e) {
       System.out.println("IO EXCEPTION");
+      fail("Should not throw this error");
       e.printStackTrace();
     } catch (ParseException e) {
       System.out.println("PARSEEXCEPTION");
+      fail("Should not throw this error");
       e.printStackTrace();
     } catch (Exception e) {
       System.out.println("LIFENOTFOUNDEXCEPTION: At this point. IDEK.");
+      fail("Should not throw this error");
       e.printStackTrace();
     }
   }
@@ -228,15 +233,19 @@ public class PackageManagerTest {
       
     } catch (FileNotFoundException e) {
       System.out.println("FILE WASN'T FOUND");
+      fail("Should not throw this error");
       e.printStackTrace();
     } catch (IOException e) {
       System.out.println("IO EXCEPTION");
+      fail("Should not throw this error");
       e.printStackTrace();
     } catch (ParseException e) {
       System.out.println("PARSEEXCEPTION");
+      fail("Should not throw this error");
       e.printStackTrace();
     } catch (Exception e) {
       System.out.println("LIFENOTFOUNDEXCEPTION: At this point. IDEK.");
+      fail("Should not throw this error");
       e.printStackTrace();
     }
   }
