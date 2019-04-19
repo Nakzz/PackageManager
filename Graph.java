@@ -7,9 +7,16 @@ import java.util.Map;
 import java.util.Set;
 
 
-// TODO: Auto-generated Javadoc
 /**
- * Filename: Graph.java Project: p4 Authors:
+ * Title: PackageManager
+ * Course: CS400, Spring 2019 
+ * Author: Ajmain Naqib 
+ * Email: naqib@wisc.edu 
+ * Lecturer's Name: Deb Deppeler
+ * 
+ */
+
+/**
  * 
  * Directed and unweighted graph implementation
  */
@@ -141,14 +148,12 @@ public class Graph implements GraphADT {
       this.addVertex(vertex2);
 
 
-
+// get edges
     LinkedList<String> currentList = this.graph.get(vertex1);
     if (currentList == null)
       currentList = new LinkedList<String>();
     else if (currentList.contains(vertex2)) // check if edge exist
       return;
-
-
 
     currentList.add(vertex2);
     this.graph.put(vertex1, currentList);
@@ -172,7 +177,7 @@ public class Graph implements GraphADT {
       return;
 
     Set<String> vertexSet = getAllVertices();
-
+// if either vertex doesn't exsit, return  
     if (!vertexSet.contains(vertex1) || !vertexSet.contains(vertex2))
       return;
 
@@ -181,7 +186,7 @@ public class Graph implements GraphADT {
     
     if (!currentAdjacentVertices.contains(vertex2))
       return;
-    
+   
     currentAdjacentVertices.remove(vertex2);
     this.numOfEdges--;
     

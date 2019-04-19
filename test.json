@@ -11,6 +11,15 @@
 	    {
 	    	"name": "E",
 	    	"dependencies": ["B"]
+	    },
+	    {
+	    "name": "F",
+	    	"dependencies": ["A", "E", "G"]
+	    },
+	    {
+	    "name": "I",
+	    	"dependencies": ["E", "G"]
 	    }
+	    
 	] 
 }
