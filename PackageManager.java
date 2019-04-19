@@ -355,8 +355,8 @@ public class PackageManager {
 
 //     String jsonFilePath = "valid.json";
     // String jsonFilePath = "cyclic.json";
-    String jsonFilePath = "test.json";
-    // String jsonFilePath = "shared_dependencies.json";
+//    String jsonFilePath = "test.json";
+     String jsonFilePath = "shared_dependencies.json";
 
     System.out.println("PackageManager.main()");
 

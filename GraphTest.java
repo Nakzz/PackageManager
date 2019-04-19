@@ -9,10 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Title: HashTableTest
- * Course: CS400, Spring 2019
- * Author: Ajmain Naqib
- * Email: naqib@wisc.edu
+ * Title: PackageManager
+ * Course: CS400, Spring 2019 
+ * Author: Ajmain Naqib 
+ * Email: naqib@wisc.edu 
  * Lecturer's Name: Deb Deppeler
  * 
  */
