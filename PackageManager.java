@@ -11,7 +11,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * Filename: PackageManager.java Project: p4 Authors:
+ * Title: PackageManager
+ * Course: CS400, Spring 2019 
+ * Author: Ajmain Naqib 
+ * Email: naqib@wisc.edu 
+ * Lecturer's Name: Deb Deppeler
+ * 
+ */
+
+/**
  * 
  * PackageManager is used to process json package dependency files and provide function that make
  * that information available to other users.
@@ -32,11 +40,13 @@ import org.json.simple.parser.ParseException;
 
 public class PackageManager {
 
+  /** The graph. */
   private Graph graph;
 
-  /*
-   * Package Manager default no-argument constructor.
+  /**
+   * Instantiates a new package manager.
    */
+
   public PackageManager() {
     this.graph = new Graph();
   }
@@ -64,28 +74,27 @@ public class PackageManager {
       JSONArray packages = (JSONArray) jsonObject.get("packages");
 
 
-
       for (int i = 0; i < packages.size(); i++) {
-        JSONObject packageItem = (JSONObject) packages.get(i);
+        JSONObject packageItem = (JSONObject) packages.get(i); 
 
-        String packageName = (String) packageItem.get("name");
-        JSONArray dependencies = (JSONArray) packageItem.get("dependencies");
+        String packageName = (String) packageItem.get("name"); // gets each packgename
+        JSONArray dependencies = (JSONArray) packageItem.get("dependencies"); // gets each dependencies
 
         System.out.println("Package name: " + packageName);
 
-        this.graph.addVertex(packageName);
+        this.graph.addVertex(packageName); // adds to graph
 
         for (int j = 0; j < dependencies.size(); j++) {
           depName = (String) dependencies.get(j);
 
-          this.graph.addEdge(packageName, depName);
-
+          this.graph.addEdge(packageName, depName); // adds edge to graph, if dependency doesn't exist, 
+                                                      //create a new vertex
           System.out.println("\t" + depName);
 
         }
       }
 
-      System.out.println("DONE!");
+//      System.out.println("DONE!");
 
 
     } catch (FileNotFoundException e) {
@@ -113,13 +122,12 @@ public class PackageManager {
    * 
    * Valid installation order means that each package is listed before any packages that depend upon
    * that package.
-   * 
+   *
+   * @param pkg the pkg
    * @return List<String>, order in which the packages have to be installed
-   * 
    * @throws CycleException if you encounter a cycle in the graph while finding the installation order
    *         for a particular package. Tip: Cycles in some other part of the graph that do not affect
    *         the installation order for the specified package, should not throw this exception.
-   * 
    * @throws PackageNotFoundException if the package passed does not exist in the dependency graph.
    */
   public List<String> getInstallationOrder(String pkg)
@@ -132,6 +140,7 @@ public class PackageManager {
 
     List<String> installationOrder = new Stack<String>();
 
+    //Recursion to keep adding to the order for all the dependency of the dependency
     try {
       installationOrder = getInstallationOrderHelper(pkg, installationOrder);
       // System.out.println(installationOrder);
@@ -144,12 +153,21 @@ public class PackageManager {
     return installationOrder;
   }
 
+  /**
+   * Gets the installation order helper.
+   *
+   * @param pkg the pkg
+   * @param installationOrder the installation order
+   * @return the installation order helper
+   * @throws CycleException the cycle exception
+   */
   private List<String> getInstallationOrderHelper(String pkg, List<String> installationOrder)
     throws CycleException {
 
 
     List<String> packageDep = this.graph.getAdjacentVerticesOf(pkg);
 
+    // base case
     if (packageDep == null) {
       if (!installationOrder.contains(pkg))
         installationOrder.add(pkg);
@@ -158,11 +176,14 @@ public class PackageManager {
       for (int i = 0; i < packageDep.size(); i++) {
         String packageName = packageDep.get(i);
 
+        //get dependencies
         List<String> packageDepofDep = this.graph.getAdjacentVerticesOf(packageName);
 
+        //if cycle
         if (packageDepofDep != null && packageDepofDep.contains(pkg))
           throw new CycleException();
 
+        // call recursive method
         installationOrder = getInstallationOrderHelper(packageDep.get(i), installationOrder);
 
       }
@@ -182,13 +203,13 @@ public class PackageManager {
    * For example, refer to shared_dependecies.json - toInstall("A","B") If package A needs to be
    * installed and packageB is already installed, return the list ["A", "C"] since D will have been
    * installed when B was previously installed.
-   * 
+   *
+   * @param newPkg the new pkg
+   * @param installedPkg the installed pkg
    * @return List<String>, packages that need to be newly installed.
-   * 
    * @throws CycleException if you encounter a cycle in the graph while finding the dependencies of
    *         the given packages. If there is a cycle in some other part of the graph that doesn't
    *         affect the parsing of these dependencies, cycle exception should not be thrown.
-   * 
    * @throws PackageNotFoundException if any of the packages passed do not exist in the dependency
    *         graph.
    */
@@ -208,20 +229,18 @@ public class PackageManager {
 
       for (int i = 0; i < currDep.size(); i++) {
         currDepPack = currDep.get(i);
-
-        if (alreadyInstalled.contains(currDepPack)) {
-          currDep.remove(i);
+        
+        if (alreadyInstalled.contains(currDepPack)) {// if already installed, removing 
+          currDep.remove(i); // from current installation list of the new package being installed
           i--;
         }
-
-
       }
 
     } catch (CycleException e) {
       throw new CycleException();
     }
 
-    System.out.println(currDep);
+//    System.out.println(currDep);
 
     return currDep;
   }
@@ -232,10 +251,10 @@ public class PackageManager {
    * assumes: no package has been installed and you are required to install all the packages
    * 
    * returns a valid installation order that will not violate any dependencies
-   * 
+   *
    * @return List<String>, order in which all the packages have to be installed
    * @throws CycleException if you encounter a cycle in the graph
-   * @throws PackageNotFoundException 
+   * @throws PackageNotFoundException the package not found exception
    */
   public List<String> getInstallationOrderForAllPackages() throws CycleException, PackageNotFoundException {
 
@@ -265,7 +284,7 @@ public class PackageManager {
       throw new CycleException();
     }
 
-System.out.println(finalInstallOrder);
+//System.out.println(finalInstallOrder);
     
     return finalInstallOrder;
   }
@@ -323,13 +342,18 @@ System.out.println(finalInstallOrder);
     return maxDepPack;
   }
 
+  /**
+   * The main method.
+   *
+   * @param args the arguments
+   */
   public static void main(String[] args) {
 
     // Your program is not required to handle badly formatted json files, but it must exit gracefully if
     // the input file is incorrect.
     // parse json file path form args
 
-    // String jsonFilePath = "valid.json";
+//     String jsonFilePath = "valid.json";
     // String jsonFilePath = "cyclic.json";
     String jsonFilePath = "test.json";
     // String jsonFilePath = "shared_dependencies.json";
