@@ -173,7 +173,7 @@ public class Graph implements GraphADT {
 
     Set<String> vertexSet = getAllVertices();
 
-    if (!vertexSet.contains(vertex1) && !vertexSet.contains(vertex2))
+    if (!vertexSet.contains(vertex1) || !vertexSet.contains(vertex2))
       return;
 
     // return if edge doesn't exisits
